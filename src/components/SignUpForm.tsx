@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { useSignupMutation } from '@/redux/features/user/userApi';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -23,8 +24,19 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
-  const onSubmit = (data: SignupFormInputs) => {
-    console.log(data);
+  // const onSubmit = (data: SignupFormInputs) => {
+  //   console.log(data);
+  // };
+
+  const [signup] = useSignupMutation(); // Use the signup mutation hook
+
+  const onSubmit = async (data: SignupFormInputs) => {
+    try {
+      const response = await signup(data);
+      // console.log(response?.error?.data?.errorMessages[0]?.message);
+    } catch (error) {
+      //console.log(error);
+    }
   };
 
   return (
