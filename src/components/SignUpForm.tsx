@@ -10,6 +10,9 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { useSignupMutation } from '@/redux/features/user/userApi';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SignupFormInputs {
@@ -24,16 +27,15 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
-  // const onSubmit = (data: SignupFormInputs) => {
-  //   console.log(data);
-  // };
-
   const [signup] = useSignupMutation(); // Use the signup mutation hook
 
   const onSubmit = async (data: SignupFormInputs) => {
     try {
-      const response = await signup(data);
-      // console.log(response?.error?.data?.errorMessages[0]?.message);
+      const response: any = await signup(data);
+      console.log(response);
+      response?.error?.data?.errorMessages[0]?.message
+        ? toast.error(response?.error?.data?.errorMessages[0]?.message)
+        : toast.success(response?.data?.message);
     } catch (error) {
       //console.log(error);
     }
@@ -41,6 +43,7 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
+      <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
