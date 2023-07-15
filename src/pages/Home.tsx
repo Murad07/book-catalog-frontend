@@ -34,7 +34,7 @@ export default function Home() {
             The future of tech is here
           </h1>
           <Button className="mt-10" asChild>
-            <Link to="/products">Brows all products</Link>
+            <Link to="/books">Brows all books</Link>
           </Button>
         </div>
       </div>

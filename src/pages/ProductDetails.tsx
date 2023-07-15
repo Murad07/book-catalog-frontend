@@ -8,19 +8,19 @@ import { useParams } from 'react-router-dom';
 export default function ProductDetails() {
   const { id } = useParams();
 
-  const { data: product, isLoading, error } = useSingleProductQuery(id);
+  const { data: book, isLoading, error } = useSingleProductQuery(id);
 
   return (
     <>
       <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300">
         <div className="w-[50%]">
-          <img src={product?.image} alt="" />
+          <img src={book?.image} alt="" />
         </div>
         <div className="w-[50%] space-y-3">
-          <h1 className="text-3xl font-semibold">{product?.name}</h1>
-          <p className="text-xl">Rating: {product?.rating}</p>
+          <h1 className="text-3xl font-semibold">{book?.name}</h1>
+          <p className="text-xl">Rating: {book?.rating}</p>
           <ul className="space-y-1 text-lg">
-            {product?.features?.map((feature: string) => (
+            {book?.features?.map((feature: string) => (
               <li key={feature}>{feature}</li>
             ))}
           </ul>

@@ -7,7 +7,7 @@ import { FiSend } from 'react-icons/fi';
 const dummyComments = [
   'Bhalo na',
   'Ki shob ghori egula??',
-  'Eta kono product holo ??',
+  'Eta kono book holo ??',
   '200 taka dibo, hobe ??',
 ];
 

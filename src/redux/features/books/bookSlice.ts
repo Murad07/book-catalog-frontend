@@ -11,8 +11,8 @@ const initialState: IProduct = {
   priceRange: 150,
 };
 
-const productSlice = createSlice({
-  name: 'product',
+const bookSlice = createSlice({
+  name: 'book',
   initialState,
   reducers: {
     toggleState: (state) => {
@@ -24,6 +24,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { toggleState, setPriceRange } = productSlice.actions;
+export const { toggleState, setPriceRange } = bookSlice.actions;
 
-export default productSlice.reducer;
+export default bookSlice.reducer;
