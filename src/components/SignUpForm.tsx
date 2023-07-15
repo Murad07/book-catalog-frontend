@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
 import { useSignupMutation } from '@/redux/features/user/userApi';
-
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,6 +26,8 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
+  const history = useNavigate();
+
   const [signup] = useSignupMutation(); // Use the signup mutation hook
 
   const onSubmit = async (data: SignupFormInputs) => {
@@ -36,6 +37,10 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
       response?.error?.data?.errorMessages[0]?.message
         ? toast.error(response?.error?.data?.errorMessages[0]?.message)
         : toast.success(response?.data?.message);
+
+      setTimeout(() => {
+        history('/login');
+      }, 4000);
     } catch (error) {
       //console.log(error);
     }
