@@ -4,6 +4,13 @@ export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/v1' }),
   endpoints: (builder) => ({
+    login: builder.mutation({
+      query: (userData) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
     signup: builder.mutation({
       query: (userData) => ({
         url: '/auth/signup',
@@ -14,4 +21,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useSignupMutation } = userApi;
+export const { useSignupMutation, useLoginMutation } = userApi;
