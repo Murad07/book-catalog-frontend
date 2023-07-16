@@ -28,37 +28,33 @@ export default function Cart() {
     <Sheet>
       <SheetTrigger>
         <Button variant="ghost">
-          <HiOutlineShoppingCart size="25" />
+          {/* <HiOutlineShoppingCart size="25" /> */}
+          Wishlist
         </Button>
       </SheetTrigger>
       <SheetContent className="overflow-auto relative">
         <SheetHeader>
-          <SheetTitle>Cart</SheetTitle>
-          <h1>Total: {total.toFixed(2)}</h1>
+          <SheetTitle>Wishlist</SheetTitle>
         </SheetHeader>
         <div className="space-y-5">
           {books.map((book) => (
             <div
               className="border h-44 p-5 flex justify-between rounded-md"
-              key={book.name}
+              key={book.title}
             >
               <div className="border-r pr-5 shrink-0">
-                <img src={book?.image} alt="" className="h-full" />
+                <img
+                  src="https://webneel.com/sites/default/files/images/download/thumb/old-book-with-blank-cover%201_0.jpg"
+                  alt=""
+                  className="h-full"
+                />
               </div>
               <div className="px-2 w-full flex flex-col gap-3">
-                <h1 className="text-2xl self-center">{book?.name}</h1>
-                <p>Quantity: {book.quantity}</p>
-                <p className="text-xl">
-                  Total Price: {(book.price * book.quantity!).toFixed(2)} $
-                </p>
+                <h1 className="text-2xl self-center">{book?.title}</h1>
+                <p>Author: {book.author}</p>
+                <p>Genre: {book.genre}</p>
               </div>
               <div className="border-l pl-5 flex flex-col justify-between">
-                <Button onClick={() => dispatch(addToCart(book))}>
-                  <HiOutlinePlus size="20" />
-                </Button>
-                <Button onClick={() => dispatch(removeOne(book))}>
-                  <HiMinus size="20" />
-                </Button>
                 <Button
                   onClick={() => dispatch(removeFromCart(book))}
                   variant="destructive"
