@@ -5,7 +5,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/v1' }),
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: () => '/books',
+      query: () => '/books?pag=1&limit=100',
     }),
     singleProduct: builder.query({
       query: (id) => `/book/${id}`,
