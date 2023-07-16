@@ -9,6 +9,7 @@ export default function BookDetails() {
   const { id } = useParams();
 
   const { data: book, isLoading, error } = useSingleBookQuery(id);
+  const bookData = book?.data;
 
   return (
     <>
@@ -20,12 +21,14 @@ export default function BookDetails() {
           />
         </div>
         <div className="w-[50%] space-y-3">
-          <h1 className="text-3xl font-semibold">{book?.title}</h1>
-          <p className="text-xl">Author: {book?.author}</p>
-          <p className="text-xl">Genre: {book?.genre}</p>
-          <p className="text-xl">Publication Date: {book?.publicationDate}</p>
+          <h1 className="text-3xl font-semibold">{bookData?.title}</h1>
+          <p className="text-xl">Author: {bookData?.author}</p>
+          <p className="text-xl">Genre: {bookData?.genre}</p>
+          <p className="text-xl">
+            Publication Date: {bookData?.publicationDate}
+          </p>
 
-          <Button>Add to cart</Button>
+          <Button>Add to Wishlist</Button>
         </div>
       </div>
       <ProductReview id={id!} />

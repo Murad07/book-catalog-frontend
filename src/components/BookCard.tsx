@@ -32,7 +32,7 @@ export default function BookCard({ book }: IProps) {
         <p className="text-sm">Genre: {book?.genre}</p>
         <p className="text-sm">Publication Date: {book?.publicationDate}</p>
         <Button variant="default" onClick={() => handleAddProduct(book)}>
-          Add to cart
+          Add to Wishlist
         </Button>
       </div>
     </div>
