@@ -47,7 +47,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
       }
 
       setTimeout(() => {
-        // history('/login');
+        history('/');
       }, 4000);
     } catch (error) {
       //console.log(error);
