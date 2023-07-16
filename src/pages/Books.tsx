@@ -1,37 +1,10 @@
 import BookCard from '@/components/BookCard';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { useToast } from '@/components/ui/use-toast';
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
-import { setPriceRange, toggleState } from '@/redux/features/books/bookSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Books() {
   const { data, isLoading, error } = useGetBooksQuery('');
-  const { toast } = useToast();
-
-  const { priceRange, status } = useAppSelector((state) => state.book);
-  const dispatch = useAppDispatch();
-
-  const handleSlider = (value: number[]) => {
-    dispatch(setPriceRange(value[0]));
-  };
-
-  // if (status) {
-  //   booksData = data?.data?.filter(
-  //     (item: { status: boolean; price: number }) =>
-  //       item.status === true && item.price < priceRange
-  //   );
-  // } else if (priceRange > 0) {
-  //   booksData = data?.data?.filter(
-  //     (item: { price: number }) => item.price < priceRange
-  //   );
-  // } else {
-  //   booksData = data?.data;
-  // }
 
   // Search
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,15 +32,15 @@ export default function Books() {
     const query = searchQuery.toLowerCase();
 
     const genreFilter = selectedGenre === 'all' || book.genre === selectedGenre;
-    // const publicationYearFilter =
-    //   selectedPublicationYear === 'all' ||
-    //   book.publicationYear === parseInt(selectedPublicationYear);
+    const publicationYearFilter =
+      selectedPublicationYear === 'all' ||
+      book.publicationDate.substring(0, 4) === selectedPublicationYear;
     return (
       (bookTitle.includes(query) ||
         bookAuthor.includes(query) ||
         bookGenre.includes(query)) &&
-      genreFilter
-      // publicationYearFilter
+      genreFilter &&
+      publicationYearFilter
     );
   });
 
@@ -110,6 +83,10 @@ export default function Books() {
             <option value="all">All Years</option>
             <option value="2023">2023</option>
             <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
             {/* Add other publication year options as needed */}
           </select>
         </div>
