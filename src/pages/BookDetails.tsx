@@ -7,7 +7,7 @@ import {
 import { useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function BookDetails() {
@@ -24,8 +24,9 @@ export default function BookDetails() {
   const [deleteBook] = useDeleteBookMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
+  const bookId = bookData?._id;
+
   const handleDelete = async () => {
-    const bookId = bookData?._id;
     console.log(bookId);
     try {
       const response: any = await deleteBook({ id: bookId, accessToken });
@@ -67,7 +68,9 @@ export default function BookDetails() {
         {isLoggedIn && (
           <div className="w-[20%] space-y-3">
             <div>
-              <Button>Edit</Button>
+              <Button>
+                <Link to={`/edit-book/${bookId}`}>Edit</Link>
+              </Button>
             </div>
             {/* Step 3: Show the confirmation dialog when clicking the Delete button */}
             <Button

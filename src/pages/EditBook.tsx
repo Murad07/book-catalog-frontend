@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAddBookMutation } from '@/redux/features/books/bookApi';
+import {
+  useEditBookMutation,
+  useSingleBookQuery,
+} from '@/redux/features/books/bookApi';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-interface AddBookInputs {
+interface UpdateBookInputs {
   title: string;
   author: string;
   genre: string;
@@ -13,20 +17,24 @@ interface AddBookInputs {
   addedBy: string;
 }
 
-export default function AddBook() {
+export default function EditBook() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<AddBookInputs>();
+    formState: { errors, isDirty },
+  } = useForm<UpdateBookInputs>();
 
-  const [addBook] = useAddBookMutation();
+  const { id } = useParams();
+  const { data: book, isLoading, error } = useSingleBookQuery(id);
+  const bookData = book?.data;
+
+  const [editBook] = useEditBookMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
-  const onSubmit = async (data: AddBookInputs) => {
+  const onSubmit = async (data: UpdateBookInputs) => {
     // console.log(data);
     try {
-      const response: any = await addBook({ data, accessToken });
+      const response: any = await editBook({ data, id, accessToken });
       console.log(response);
       if (response?.error?.data?.errorMessages[0]?.message) {
         toast.error(response?.error?.data?.errorMessages[0]?.message);
@@ -46,7 +54,7 @@ export default function AddBook() {
     <div className="flex justify-center items-center h-[calc(100vh-80px)] gap-10 text-primary">
       <ToastContainer />
       <div className="max-w-3xl w-full">
-        <h1 className="mb-2">Add New Book</h1>
+        <h1 className="mb-2">Edit Book</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="h-[48vh] border border-gray-300 rounded-md p-10 overflow-auto">
             <div className="flex gap-5">
@@ -58,10 +66,17 @@ export default function AddBook() {
                     id="title"
                     autoCapitalize="none"
                     autoCorrect="off"
-                    {...register('title', { required: 'Title is required' })}
+                    defaultValue={bookData?.title}
+                    {...register('title', {
+                      validate: (value) => {
+                        return (
+                          isDirty || value.trim() !== '' || 'Title is required'
+                        );
+                      },
+                    })}
                     className="mt-2"
                   />
-                  {errors.title && <p>{errors.title.message}</p>}
+                  {isDirty && errors.title && <p>{errors.title.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="name">Genre</Label>
@@ -70,10 +85,17 @@ export default function AddBook() {
                     id="genre"
                     autoCapitalize="none"
                     autoCorrect="off"
-                    {...register('genre', { required: 'Genre is required' })}
+                    defaultValue={bookData?.genre}
+                    {...register('genre', {
+                      validate: (value) => {
+                        return (
+                          isDirty || value.trim() !== '' || 'Genre is required'
+                        );
+                      },
+                    })}
                     className="mt-2"
                   />
-                  {errors.genre && <p>{errors.genre.message}</p>}
+                  {isDirty && errors.genre && <p>{errors.genre.message}</p>}
                 </div>
               </div>
               <div className="w-full space-y-5">
@@ -84,10 +106,17 @@ export default function AddBook() {
                     id="author"
                     autoCapitalize="none"
                     autoCorrect="off"
-                    {...register('author', { required: 'Author is required' })}
+                    {...register('author', {
+                      validate: (value) => {
+                        return (
+                          isDirty || value.trim() !== '' || 'Author is required'
+                        );
+                      },
+                    })}
                     className="mt-2"
+                    defaultValue={bookData?.author}
                   />
-                  {errors.author && <p>{errors.author.message}</p>}
+                  {isDirty && errors.author && <p>{errors.author.message}</p>}
                 </div>
                 <div className="w-full flex flex-col mt-2">
                   <Label htmlFor="name" className="mb-4">
@@ -99,17 +128,24 @@ export default function AddBook() {
                     autoCapitalize="none"
                     autoCorrect="off"
                     {...register('publicationDate', {
-                      required: 'Date is required',
+                      validate: (value) => {
+                        return (
+                          isDirty ||
+                          value.trim() !== '' ||
+                          'Publication Date is required'
+                        );
+                      },
                     })}
+                    defaultValue={bookData?.publicationDate}
                   />
-                  {errors.publicationDate && (
+                  {isDirty && errors.publicationDate && (
                     <p>{errors.publicationDate.message}</p>
                   )}
                 </div>
               </div>
             </div>
             <div className="mt-10">
-              <Button className="w-full">AddBook</Button>
+              <Button className="w-full">Update</Button>
             </div>
           </div>
         </form>

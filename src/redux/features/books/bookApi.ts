@@ -22,6 +22,17 @@ const bookApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    editBook: builder.mutation({
+      query: ({ data, id, accessToken }) => ({
+        url: `/books/${id}`,
+        method: 'PATCH',
+        headers: {
+          authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      }),
+    }),
     deleteBook: builder.mutation({
       query: ({ id, accessToken }) => ({
         url: `/books/${id}`,
@@ -54,5 +65,6 @@ export const {
   //   usePostCommentMutation,
   useSingleBookQuery,
   useAddBookMutation,
+  useEditBookMutation,
   useDeleteBookMutation,
 } = bookApi;
