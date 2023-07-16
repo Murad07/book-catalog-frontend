@@ -7,10 +7,11 @@ import {
 import { useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function BookDetails() {
+  const history = useNavigate();
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const { id } = useParams();
 
@@ -38,7 +39,7 @@ export default function BookDetails() {
       }
 
       setTimeout(() => {
-        // history('/');
+        history('/books');
       }, 4000);
     } catch (error) {
       //console.log(error);

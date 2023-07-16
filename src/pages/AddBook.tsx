@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAddBookMutation } from '@/redux/features/books/bookApi';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 interface AddBookInputs {
@@ -20,6 +21,8 @@ export default function AddBook() {
     formState: { errors },
   } = useForm<AddBookInputs>();
 
+  const history = useNavigate();
+
   const [addBook] = useAddBookMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
@@ -35,7 +38,7 @@ export default function AddBook() {
       }
 
       setTimeout(() => {
-        // history('/');
+        history('/books');
       }, 4000);
     } catch (error) {
       //console.log(error);

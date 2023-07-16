@@ -6,7 +6,7 @@ import {
   useSingleBookQuery,
 } from '@/redux/features/books/bookApi';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 interface UpdateBookInputs {
@@ -23,6 +23,8 @@ export default function EditBook() {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<UpdateBookInputs>();
+
+  const history = useNavigate();
 
   const { id } = useParams();
   const { data: book, isLoading, error } = useSingleBookQuery(id);
@@ -43,7 +45,7 @@ export default function EditBook() {
       }
 
       setTimeout(() => {
-        // history('/');
+        history(`/books`);
       }, 4000);
     } catch (error) {
       //console.log(error);
