@@ -8,8 +8,8 @@ const bookApi = api.injectEndpoints({
     getTopBooks: builder.query({
       query: () => `/books?pag=1&limit=10`,
     }),
-    singleProduct: builder.query({
-      query: (id) => `/book/${id}`,
+    singleBook: builder.query({
+      query: (id) => `/books/${id}`,
     }),
     addBook: builder.mutation({
       query: ({ data, accessToken }) => ({
@@ -42,6 +42,6 @@ export const {
   useGetBooksQuery,
   useGetTopBooksQuery,
   //   usePostCommentMutation,
-  useSingleProductQuery,
+  useSingleBookQuery,
   useAddBookMutation,
 } = bookApi;
