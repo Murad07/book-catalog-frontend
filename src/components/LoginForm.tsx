@@ -72,7 +72,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               autoCorrect="off"
               {...register('email', { required: 'Email is required' })}
             />
-            {/* {errors.email && <p>{errors.email.message}</p>} */}
+            {errors.email && <p>{errors.email.message}</p>}
             <Input
               id="password"
               placeholder="your password"
@@ -81,7 +81,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="password"
               {...register('password', { required: 'Password is required' })}
             />
-            {/* {errors.password && <p>{errors.password.message}</p>} */}
+            {errors.password && <p>{errors.password.message}</p>}
           </div>
           <Button>Login with email</Button>
         </div>

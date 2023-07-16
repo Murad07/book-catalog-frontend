@@ -33,6 +33,13 @@ export default function Navbar() {
                   <Link to="/books">All Books</Link>
                 </Button>
               </li>
+              {isLoggedIn && (
+                <li>
+                  <Button variant="link" asChild>
+                    <Link to="/create-book">Add Book</Link>
+                  </Button>
+                </li>
+              )}
               <li>
                 <Button variant="ghost">
                   <HiOutlineSearch size="25" />
