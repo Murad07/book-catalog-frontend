@@ -11,6 +11,8 @@ import { useLoginMutation } from '@/redux/features/user/userApi';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAppDispatch } from '@/redux/hook';
+import { loginUser } from '@/redux/features/user/userSlice';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -28,6 +30,8 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
 
   const history = useNavigate();
 
+  const dispatch = useAppDispatch();
+
   const [login] = useLoginMutation();
 
   const onSubmit = async (data: LoginFormInputs) => {
@@ -35,9 +39,12 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
     try {
       const response: any = await login(data);
       console.log(response);
-      response?.error?.data?.errorMessages[0]?.message
-        ? toast.error(response?.error?.data?.errorMessages[0]?.message)
-        : toast.success(response?.data?.message);
+      if (response?.error?.data?.errorMessages[0]?.message) {
+        toast.error(response?.error?.data?.errorMessages[0]?.message);
+      } else {
+        toast.success(response?.data?.message);
+        dispatch(loginUser(response?.data?.data?.accessToken));
+      }
 
       setTimeout(() => {
         // history('/login');

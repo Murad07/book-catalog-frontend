@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Button } from '../components/ui/button';
-import { DropdownMenuSeparator } from '../components/ui/dropdown-menu';
-import { DropdownMenuLabel } from '../components/ui/dropdown-menu';
-import {
-  DropdownMenuItem,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from '../components/ui/dropdown-menu';
 import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/book-catalog-logo.png';
+import { useAppSelector } from '@/redux/hook';
 
 export default function Navbar() {
+  const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
+  console.log(isLoggedIn);
+
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
@@ -34,11 +29,6 @@ export default function Navbar() {
                 </Button>
               </li>
               <li>
-                <Button variant="link" asChild>
-                  <Link to="/checkout">Checkout</Link>
-                </Button>
-              </li>
-              <li>
                 <Button variant="ghost">
                   <HiOutlineSearch size="25" />
                 </Button>
@@ -47,30 +37,17 @@ export default function Navbar() {
                 <Cart />
               </li>
               <li className="ml-5">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="outline-none">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Billing
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Team
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Subscription
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {isLoggedIn ? (
+                  // User is logged in, show logout button
+                  <Button variant="ghost">
+                    <Link to="/logout">Logout</Link>
+                  </Button>
+                ) : (
+                  // User is not logged in, show login button
+                  <Button variant="ghost">
+                    <Link to="/login">Login</Link>
+                  </Button>
+                )}
               </li>
             </ul>
           </div>
