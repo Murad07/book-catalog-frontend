@@ -20,8 +20,6 @@ export default function Books() {
     dispatch(setPriceRange(value[0]));
   };
 
-  let booksData;
-
   // if (status) {
   //   booksData = data?.data?.filter(
   //     (item: { status: boolean; price: number }) =>
@@ -37,19 +35,39 @@ export default function Books() {
 
   // Search
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState('all');
+  const [selectedPublicationYear, setSelectedPublicationYear] = useState('all');
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  booksData = data?.data?.filter((book: IProduct) => {
+  const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGenre(event.target.value);
+  };
+
+  const handlePublicationYearChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedPublicationYear(event.target.value);
+  };
+
+  const booksData = data?.data?.filter((book: IProduct) => {
     const bookTitle = book.title.toLowerCase();
     const bookAuthor = book.author.toLowerCase();
     const bookGenre = book.genre.toLowerCase();
     const query = searchQuery.toLowerCase();
+
+    const genreFilter = selectedGenre === 'all' || book.genre === selectedGenre;
+    // const publicationYearFilter =
+    //   selectedPublicationYear === 'all' ||
+    //   book.publicationYear === parseInt(selectedPublicationYear);
     return (
-      bookTitle.includes(query) ||
-      bookAuthor.includes(query) ||
-      bookGenre.includes(query)
+      (bookTitle.includes(query) ||
+        bookAuthor.includes(query) ||
+        bookGenre.includes(query)) &&
+      genreFilter
+      // publicationYearFilter
     );
   });
 
@@ -66,28 +84,34 @@ export default function Books() {
             onChange={handleSearch}
           />
         </div>
-        <div>
-          <h1 className="text-2xl uppercase">Availability</h1>
-          <div
-            onClick={() => dispatch(toggleState())}
-            className="flex items-center space-x-2 mt-3"
+
+        <div className="space-y-3">
+          <h1 className="text-2xl uppercase">Genre</h1>
+          <select
+            value={selectedGenre}
+            onChange={handleGenreChange}
+            className="border rounded px-2 py-1 w-full"
           >
-            <Switch id="in-stock" />
-            <Label htmlFor="in-stock">In stock</Label>
-          </div>
+            <option value="all">All Genres</option>
+            <option value="Story">Story</option>
+            <option value="Programming">Programming</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Non-fiction">Non-Fiction</option>
+            {/* Add other genre options as needed */}
+          </select>
         </div>
-        <div className="space-y-3 ">
-          <h1 className="text-2xl uppercase">Price Range</h1>
-          <div className="max-w-xl">
-            <Slider
-              defaultValue={[150]}
-              max={150}
-              min={0}
-              step={1}
-              onValueChange={(value) => handleSlider(value)}
-            />
-          </div>
-          <div>From 0$ To {priceRange}$</div>
+        <div className="space-y-3">
+          <h1 className="text-2xl uppercase">Publication Year</h1>
+          <select
+            value={selectedPublicationYear}
+            onChange={handlePublicationYearChange}
+            className="border rounded px-2 py-1 w-full"
+          >
+            <option value="all">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            {/* Add other publication year options as needed */}
+          </select>
         </div>
       </div>
       <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
