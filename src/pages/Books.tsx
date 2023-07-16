@@ -1,9 +1,13 @@
 import BookCard from '@/components/BookCard';
+import { Button } from '@/components/ui/button';
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import { IProduct } from '@/types/globalTypes';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '@/redux/hook';
 
 export default function Books() {
+  const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const { data, isLoading, error } = useGetBooksQuery('');
 
   // Search
@@ -47,6 +51,11 @@ export default function Books() {
   return (
     <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
       <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
+        {isLoggedIn && (
+          <Button variant="default">
+            <Link to="/create-book">Add New</Link>
+          </Button>
+        )}
         <div className="space-y-3">
           <h1 className="text-2xl uppercase">Search</h1>
           <input

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/book-catalog-logo.png';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
