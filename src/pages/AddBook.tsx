@@ -21,8 +21,7 @@ export default function AddBook() {
   } = useForm<AddBookInputs>();
 
   const [addBook] = useAddBookMutation();
-  const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGIyMWI5ZmEwOGI4YmQyMDliNTdlZjMiLCJ1c2VyRW1haWwiOiJhcmFmQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjg5NDc1NjMwLCJleHAiOjE2ODk1NjIwMzB9.g8G6rZf8HHgdY4YfuMx6tmcWT4heMOZx1Yjn5B-jXNE';
+  const accessToken = localStorage.getItem('accessToken') || '';
 
   const onSubmit = async (data: AddBookInputs) => {
     console.log(data);
@@ -63,14 +62,6 @@ export default function AddBook() {
                     className="mt-2"
                   />
                   {errors.title && <p>{errors.title.message}</p>}
-                  <Input
-                    type="text"
-                    id="addedBy"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    value="64b105444f75226531076cd2"
-                    {...register('addedBy', { required: 'Title is required' })}
-                  />
                 </div>
                 <div>
                   <Label htmlFor="name">Genre</Label>
