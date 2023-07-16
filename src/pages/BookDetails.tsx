@@ -1,11 +1,17 @@
 import ProductReview from '@/components/ProductReview';
 import { Button } from '@/components/ui/button';
-import { useSingleBookQuery } from '@/redux/features/books/bookApi';
+import {
+  useDeleteBookMutation,
+  useSingleBookQuery,
+} from '@/redux/features/books/bookApi';
+import { useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function BookDetails() {
+  const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const { id } = useParams();
 
   const { data: book, isLoading, error } = useSingleBookQuery(id);
@@ -15,15 +21,33 @@ export default function BookDetails() {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Step 4: Function to handle the actual deletion
-  const handleDelete = () => {
-    // Perform the deletion logic here
-    // ...
-    // Once the deletion is complete, you may want to redirect the user to another page or update the UI accordingly
+  const [deleteBook] = useDeleteBookMutation();
+  const accessToken = localStorage.getItem('accessToken') || '';
+
+  const handleDelete = async () => {
+    const bookId = bookData?._id;
+    console.log(bookId);
+    try {
+      const response: any = await deleteBook({ id: bookId, accessToken });
+      console.log(response);
+      if (response?.error?.data?.errorMessages[0]?.message) {
+        toast.error(response?.error?.data?.errorMessages[0]?.message);
+      } else {
+        toast.success(response?.data?.message);
+      }
+
+      setTimeout(() => {
+        // history('/');
+      }, 4000);
+    } catch (error) {
+      //console.log(error);
+    }
   };
 
   return (
     <>
       <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300">
+        <ToastContainer />
         <div className="w-[40%]">
           <img
             src="https://webneel.com/sites/default/files/images/download/thumb/old-book-with-blank-cover%201_0.jpg"
@@ -40,19 +64,21 @@ export default function BookDetails() {
 
           <Button>Add to Wishlist</Button>
         </div>
-        <div className="w-[20%] space-y-3">
-          <div>
-            <Button>Edit</Button>
+        {isLoggedIn && (
+          <div className="w-[20%] space-y-3">
+            <div>
+              <Button>Edit</Button>
+            </div>
+            {/* Step 3: Show the confirmation dialog when clicking the Delete button */}
+            <Button
+              variant="destructive"
+              className="bg-red-500 hover:bg-red-400"
+              onClick={() => setShowConfirmation(true)}
+            >
+              Delete
+            </Button>
           </div>
-          {/* Step 3: Show the confirmation dialog when clicking the Delete button */}
-          <Button
-            variant="destructive"
-            className="bg-red-500 hover:bg-red-400"
-            onClick={() => setShowConfirmation(true)}
-          >
-            Delete
-          </Button>
-        </div>
+        )}
       </div>
 
       {/* Step 5: Conditionally show the confirmation dialog */}
