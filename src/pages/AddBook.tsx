@@ -24,7 +24,7 @@ export default function AddBook() {
   const accessToken = localStorage.getItem('accessToken') || '';
 
   const onSubmit = async (data: AddBookInputs) => {
-    console.log(data);
+    // console.log(data);
     try {
       const response: any = await addBook({ data, accessToken });
       console.log(response);
