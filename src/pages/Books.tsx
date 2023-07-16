@@ -3,15 +3,14 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
-import { useGetBooksQuery } from '@/redux/api/apiSlice';
+import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import { setPriceRange, toggleState } from '@/redux/features/books/bookSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 import { useEffect, useState } from 'react';
 
 export default function Books() {
-  const { data, isLoading, error } = useGetBooksQuery(undefined);
-
+  const { data, isLoading, error } = useGetBooksQuery('');
   const { toast } = useToast();
 
   const { priceRange, status } = useAppSelector((state) => state.book);
@@ -21,7 +20,7 @@ export default function Books() {
     dispatch(setPriceRange(value[0]));
   };
 
-  const booksData = data?.data;
+  let booksData;
 
   // if (status) {
   //   booksData = data?.data?.filter(
@@ -36,9 +35,37 @@ export default function Books() {
   //   booksData = data?.data;
   // }
 
+  // Search
+  const [searchQuery, setSearchQuery] = useState('');
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  booksData = data?.data?.filter((book: IProduct) => {
+    const bookTitle = book.title.toLowerCase();
+    const bookAuthor = book.author.toLowerCase();
+    const bookGenre = book.genre.toLowerCase();
+    const query = searchQuery.toLowerCase();
+    return (
+      bookTitle.includes(query) ||
+      bookAuthor.includes(query) ||
+      bookGenre.includes(query)
+    );
+  });
+
   return (
     <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
       <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
+        <div className="space-y-3">
+          <h1 className="text-2xl uppercase">Search</h1>
+          <input
+            type="text"
+            placeholder="Search books..."
+            className="border rounded px-2 py-1 w-full"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
         <div>
           <h1 className="text-2xl uppercase">Availability</h1>
           <div

@@ -41,11 +41,6 @@ export default function Navbar() {
                 </li>
               )}
               <li>
-                <Button variant="ghost">
-                  <HiOutlineSearch size="25" />
-                </Button>
-              </li>
-              <li>
                 <Cart />
               </li>
               <li className="ml-5">

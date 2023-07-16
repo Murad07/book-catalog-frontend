@@ -3,10 +3,10 @@ import { api } from '@/redux/api/apiSlice';
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: () => '/books?pag=1&limit=100',
+      query: () => `/books?pag=1&limit=5&searchTerm=Jol`,
     }),
     getTopBooks: builder.query({
-      query: () => '/books?pag=1&limit=10',
+      query: (searchTerm) => `books?pag=1&limit=100&searchTerm=${searchTerm}`,
     }),
     singleProduct: builder.query({
       query: (id) => `/book/${id}`,
