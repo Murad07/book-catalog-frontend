@@ -1,4 +1,4 @@
-import ProductReview from '@/components/ProductReview';
+import BookReview from '@/components/BookReview';
 import { Button } from '@/components/ui/button';
 import {
   useDeleteBookMutation,
@@ -113,7 +113,7 @@ export default function BookDetails() {
         </div>
       )}
 
-      <ProductReview id={id!} />
+      <BookReview id={id!} />
     </>
   );
 }

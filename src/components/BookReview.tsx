@@ -1,8 +1,11 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { FiSend } from 'react-icons/fi';
+import { useAddReviewMutation } from '@/redux/features/books/bookApi';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const dummyComments = [
   'Bhalo na',
@@ -15,13 +18,31 @@ interface IProps {
   id: string;
 }
 
-export default function ProductReview({ id }: IProps) {
+export default function BookReview({ id }: IProps) {
   const [inputValue, setInputValue] = useState<string>('');
-  console.log(inputValue);
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [addReview] = useAddReviewMutation();
+  const accessToken = localStorage.getItem('accessToken') || '';
+  const history = useNavigate();
 
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const reviewData = {
+      book: id,
+      reviewText: inputValue,
+    };
+
+    console.log(reviewData);
     setInputValue('');
+
+    try {
+      const response: any = await addReview({ reviewData, accessToken });
+
+      response?.error?.data?.errorMessages[0]?.message
+        ? toast.error(response?.error?.data?.errorMessages[0]?.message)
+        : toast.success(response?.data?.message);
+    } catch (error) {
+      //console.log(error);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -32,6 +53,7 @@ export default function ProductReview({ id }: IProps) {
     <div className="max-w-7xl mx-auto mt-5">
       <form className="flex gap-5 items-center" onSubmit={handleSubmit}>
         <Textarea
+          id="reviewText"
           className="min-h-[30px]"
           onChange={handleChange}
           value={inputValue}
@@ -47,7 +69,7 @@ export default function ProductReview({ id }: IProps) {
         {dummyComments.map((comment, index) => (
           <div key={index} className="flex gap-3 items-center mb-5">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <p>{comment}</p>
