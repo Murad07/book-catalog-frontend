@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import Cart from '../components/Cart';
 import logo from '../assets/images/book-catalog-logo.png';
@@ -9,8 +9,14 @@ export default function Navbar() {
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const dispatch = useAppDispatch();
 
+  const history = useNavigate();
+
   const handleLogout = () => {
     dispatch(logoutUser());
+
+    setTimeout(() => {
+      history(`/`);
+    }, 1000);
   };
 
   return (
