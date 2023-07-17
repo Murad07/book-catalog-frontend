@@ -10,34 +10,26 @@ import { Button } from './ui/button';
 import { IProduct } from '@/types/globalTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import {
-  addToCart,
-  removeFromCart,
-  removeOne,
-} from '@/redux/features/cart/cartSlice';
-import { addToRead } from '@/redux/features/read/readSlice';
-import { toast } from './ui/use-toast';
+  addToRead,
+  removeFromRead,
+  markAsFinished,
+} from '@/redux/features/read/readSlice';
 
-export default function Cart() {
-  const { books, total } = useAppSelector((state) => state.cart);
+export default function Read() {
+  const { books } = useAppSelector((state) => state.read);
   const dispatch = useAppDispatch();
 
-  const handleAddToRead = (book: IProduct) => {
-    dispatch(addToRead(book));
-    toast({
-      description: 'Book Added',
-    });
-  };
   return (
     <Sheet>
       <SheetTrigger>
         <Button variant="ghost">
-          {/* <HiOutlineShoppingCart size="25" /> */}
-          Wishlist
+          {/* <HiOutlineShoppingRead size="25" /> */}
+          Read List
         </Button>
       </SheetTrigger>
       <SheetContent className="overflow-auto relative">
         <SheetHeader>
-          <SheetTitle>Wishlist</SheetTitle>
+          <SheetTitle>Reading Book List</SheetTitle>
         </SheetHeader>
         <div className="space-y-5">
           {books.map((book) => (
@@ -57,20 +49,30 @@ export default function Cart() {
                 <p>Author: {book.author}</p>
                 <p>Genre: {book.genre}</p>
               </div>
-              <div className="border-l pl-5 flex flex-col ">
+              <div className="border-l pl-5 flex flex-col">
+                {book.isFinished && (
+                  <Button
+                    variant="destructive"
+                    className="mb-2 bg-green-500 hover:bg-green-400"
+                  >
+                    Finished
+                  </Button>
+                )}
+                {!book.isFinished && (
+                  <Button
+                    onClick={() => dispatch(markAsFinished(book))}
+                    variant="destructive"
+                    className="mb-2 bg-blue-300 hover:bg-blue-200"
+                  >
+                    Reading
+                  </Button>
+                )}
                 <Button
-                  onClick={() => dispatch(removeFromCart(book))}
+                  onClick={() => dispatch(removeFromRead(book))}
                   variant="destructive"
                   className="bg-red-500 hover:bg-red-400"
                 >
                   <HiOutlineTrash size="20" />
-                </Button>
-                <Button
-                  variant="default"
-                  className="mt-2 bg-blue-500 hover:bg-blue-400"
-                  onClick={() => handleAddToRead(book)}
-                >
-                  Read
                 </Button>
               </div>
             </div>

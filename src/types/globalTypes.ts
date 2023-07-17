@@ -4,4 +4,5 @@ export interface IProduct {
   author: string;
   genre: string;
   publicationDate: string;
+  isFinished: boolean;
 }

@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '@/redux/hook';
 import { addToCart } from '@/redux/features/cart/cartSlice';
+import { addToRead } from '@/redux/features/read/readSlice';
 
 interface IProps {
   book: IProduct;
@@ -15,7 +16,13 @@ export default function BookCard({ book }: IProps) {
   const handleAddProduct = (book: IProduct) => {
     dispatch(addToCart(book));
     toast({
-      description: 'Product Added',
+      description: 'Book Added',
+    });
+  };
+  const handleAddToRead = (book: IProduct) => {
+    dispatch(addToRead(book));
+    toast({
+      description: 'Book Added',
     });
   };
   return (
@@ -31,9 +38,19 @@ export default function BookCard({ book }: IProps) {
         <p>Author: {book?.author}</p>
         <p className="text-sm">Genre: {book?.genre}</p>
         <p className="text-sm">Publication Date: {book?.publicationDate}</p>
-        <Button variant="default" onClick={() => handleAddProduct(book)}>
-          Add to Wishlist
-        </Button>
+
+        <div className="flex flex-row ">
+          <Button variant="default" onClick={() => handleAddProduct(book)}>
+            Add to Wishlist
+          </Button>
+          <Button
+            className="ml-2"
+            variant="default"
+            onClick={() => handleAddToRead(book)}
+          >
+            Read
+          </Button>
+        </div>
       </div>
     </div>
   );

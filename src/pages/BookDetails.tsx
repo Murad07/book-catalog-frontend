@@ -28,7 +28,7 @@ export default function BookDetails() {
   const bookId = bookData?._id;
 
   const handleDelete = async () => {
-    console.log(bookId);
+    // console.log(bookId);
     try {
       const response: any = await deleteBook({ id: bookId, accessToken });
       console.log(response);

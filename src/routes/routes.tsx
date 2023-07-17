@@ -1,4 +1,5 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, useRoutes, useNavigate } from 'react-router-dom';
+import { ReactNode } from 'react';
 import App from '@/App';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
@@ -9,6 +10,30 @@ import Signup from '@/pages/Signup';
 import BookDetails from '@/pages/BookDetails';
 import AddBook from '@/pages/AddBook';
 import EditBook from '@/pages/EditBook';
+import { useAppSelector } from '@/redux/hook';
+
+type PrivateRouteProps = {
+  element: ReactNode;
+  path: string;
+};
+
+// Higher-order component to protect routes that require authentication
+const PrivateRoute = ({ element, path }: PrivateRouteProps) => {
+  const navigate = useNavigate();
+
+  const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
+
+  if (!isLoggedIn) {
+    navigate('/login');
+    return (
+      <>
+        <p>Please login before Access</p>
+      </>
+    );
+  } else {
+    return element;
+  }
+};
 
 const routes = createBrowserRouter([
   {
@@ -29,15 +54,15 @@ const routes = createBrowserRouter([
       },
       {
         path: '/checkout',
-        element: <Checkout />,
+        element: <PrivateRoute path="/checkout" element={<Checkout />} />,
       },
       {
         path: '/create-book',
-        element: <AddBook />,
+        element: <PrivateRoute path="/create-book" element={<AddBook />} />,
       },
       {
         path: '/edit-book/:id',
-        element: <EditBook />,
+        element: <PrivateRoute path="/edit-book/:id" element={<EditBook />} />,
       },
     ],
   },

@@ -4,6 +4,7 @@ import Cart from '../components/Cart';
 import logo from '../assets/images/book-catalog-logo.png';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { logoutUser } from '@/redux/features/user/userSlice';
+import Read from '@/components/Read';
 
 export default function Navbar() {
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
@@ -47,6 +48,9 @@ export default function Navbar() {
               )}
               <li>
                 <Cart />
+              </li>
+              <li>
+                <Read />
               </li>
               <li className="ml-5">
                 {isLoggedIn ? (
