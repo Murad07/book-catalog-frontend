@@ -3,16 +3,12 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { FiSend } from 'react-icons/fi';
-import { useAddReviewMutation } from '@/redux/features/books/bookApi';
+import {
+  useAddReviewMutation,
+  useGetReviewQuery,
+} from '@/redux/features/books/bookApi';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
-const dummyComments = [
-  'Bhalo na',
-  'Ki shob ghori egula??',
-  'Eta kono book holo ??',
-  '200 taka dibo, hobe ??',
-];
 
 interface IProps {
   id: string;
@@ -22,7 +18,9 @@ export default function BookReview({ id }: IProps) {
   const [inputValue, setInputValue] = useState<string>('');
   const [addReview] = useAddReviewMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
-  const history = useNavigate();
+
+  const { data, isLoading, error, refetch } = useGetReviewQuery(id);
+  const myData = data?.data;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +29,6 @@ export default function BookReview({ id }: IProps) {
       reviewText: inputValue,
     };
 
-    console.log(reviewData);
     setInputValue('');
 
     try {
@@ -40,6 +37,10 @@ export default function BookReview({ id }: IProps) {
       response?.error?.data?.errorMessages[0]?.message
         ? toast.error(response?.error?.data?.errorMessages[0]?.message)
         : toast.success(response?.data?.message);
+
+      if (response?.data?.success) {
+        refetch();
+      }
     } catch (error) {
       //console.log(error);
     }
@@ -66,13 +67,15 @@ export default function BookReview({ id }: IProps) {
         </Button>
       </form>
       <div className="mt-10">
-        {dummyComments.map((comment, index) => (
+        {myData.map((comment: any, index: number) => (
           <div key={index} className="flex gap-3 items-center mb-5">
             <Avatar>
               {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>
+                {comment.reviewBy.email.substring(0, 2)}
+              </AvatarFallback>
             </Avatar>
-            <p>{comment}</p>
+            <p>{comment.reviewText}</p>
           </div>
         ))}
       </div>

@@ -11,17 +11,6 @@ const bookApi = api.injectEndpoints({
     singleBook: builder.query({
       query: (id) => `/books/${id}`,
     }),
-    addReview: builder.mutation({
-      query: ({ reviewData, accessToken }) => ({
-        url: `/reviews`,
-        method: 'POST',
-        headers: {
-          authorization: `${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: reviewData,
-      }),
-    }),
     addBook: builder.mutation({
       query: ({ data, accessToken }) => ({
         url: `/books/create-book`,
@@ -54,23 +43,24 @@ const bookApi = api.injectEndpoints({
         },
       }),
     }),
-    // postComment: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/comment/${id}`,
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ['comments'],
-    // }),
-    // getComment: builder.query({
-    //   query: (id) => `/comment/${id}`,
-    //   providesTags: ['comments'],
-    // }),
+    addReview: builder.mutation({
+      query: ({ reviewData, accessToken }) => ({
+        url: `/reviews`,
+        method: 'POST',
+        headers: {
+          authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: reviewData,
+      }),
+    }),
+    getReview: builder.query({
+      query: (id) => `/reviews/${id}`,
+    }),
   }),
 });
 
 export const {
-  //   useGetCommentQuery,
   useGetBooksQuery,
   useGetTopBooksQuery,
   useAddReviewMutation,
@@ -78,4 +68,5 @@ export const {
   useAddBookMutation,
   useEditBookMutation,
   useDeleteBookMutation,
+  useGetReviewQuery,
 } = bookApi;
