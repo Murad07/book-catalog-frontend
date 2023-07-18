@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import BookCard from '@/components/BookCard';
 import { Button } from '@/components/ui/button';
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
