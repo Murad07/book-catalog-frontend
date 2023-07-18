@@ -25,12 +25,10 @@ export default function BookDetails() {
   const [deleteBook] = useDeleteBookMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
-  const bookId = bookData?._id;
-
   const handleDelete = async () => {
     // console.log(bookId);
     try {
-      const response: any = await deleteBook({ id: bookId, accessToken });
+      const response: any = await deleteBook({ id: id, accessToken });
       console.log(response);
       if (response?.error?.data?.errorMessages[0]?.message) {
         toast.error(response?.error?.data?.errorMessages[0]?.message);
@@ -70,7 +68,7 @@ export default function BookDetails() {
           <div className="w-[20%] space-y-3">
             <div>
               <Button>
-                <Link to={`/edit-book/${bookId}`}>Edit</Link>
+                <Link to={`/edit-book/${id}`}>Edit</Link>
               </Button>
             </div>
             {/* Step 3: Show the confirmation dialog when clicking the Delete button */}

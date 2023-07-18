@@ -67,7 +67,7 @@ export default function BookReview({ id }: IProps) {
         </Button>
       </form>
       <div className="mt-10">
-        {myData.map((comment: any, index: number) => (
+        {myData?.map((comment: any, index: number) => (
           <div key={index} className="flex gap-3 items-center mb-5">
             <Avatar>
               {/* <AvatarImage src="https://github.com/shadcn.png" /> */}

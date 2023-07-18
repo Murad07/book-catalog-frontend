@@ -54,15 +54,18 @@ export default function Navbar() {
               </li>
               <li className="ml-5">
                 {isLoggedIn ? (
-                  // User is logged in, show logout button
                   <Button variant="ghost" onClick={handleLogout}>
                     Logout
                   </Button>
                 ) : (
-                  // User is not logged in, show login button
-                  <Button variant="ghost">
-                    <Link to="/login">Login</Link>
-                  </Button>
+                  <>
+                    <Button variant="ghost">
+                      <Link to="/login">Login</Link>
+                    </Button>
+                    <Button variant="ghost">
+                      <Link to="/signup">Sign Up</Link>
+                    </Button>
+                  </>
                 )}
               </li>
             </ul>
