@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/v1' }),
+  tagTypes: ['singlebook'],
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: (searchTerm) => `books?pag=1&limit=100&searchTerm=${searchTerm}`,
