@@ -1,4 +1,4 @@
-import { createBrowserRouter, useRoutes, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, useNavigate } from 'react-router-dom';
 import { ReactNode } from 'react';
 import App from '@/App';
 import Login from '@/pages/Login';
@@ -18,7 +18,7 @@ type PrivateRouteProps = {
 };
 
 // Higher-order component to protect routes that require authentication
-const PrivateRoute = ({ element, path }: PrivateRouteProps) => {
+const PrivateRoute = ({ element }: PrivateRouteProps) => {
   const navigate = useNavigate();
 
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);

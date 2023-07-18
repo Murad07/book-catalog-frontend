@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import banner from '@/assets/images/banner.png';
 import Footer from '@/layouts/Footer';
 import { useGetTopBooksQuery } from '@/redux/features/books/bookApi';
@@ -6,7 +5,7 @@ import { IProduct } from '@/types/globalTypes';
 import BookCard from '@/components/BookCard';
 
 export default function Home() {
-  const { data, isLoading, error } = useGetTopBooksQuery(undefined);
+  const { data } = useGetTopBooksQuery(undefined);
   const booksData = data?.data;
 
   return (
