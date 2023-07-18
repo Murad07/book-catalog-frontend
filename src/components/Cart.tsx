@@ -9,16 +9,12 @@ import { HiOutlineTrash } from 'react-icons/hi';
 import { Button } from './ui/button';
 import { IProduct } from '@/types/globalTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import {
-  addToCart,
-  removeFromCart,
-  removeOne,
-} from '@/redux/features/cart/cartSlice';
+import { removeFromCart } from '@/redux/features/cart/cartSlice';
 import { addToRead } from '@/redux/features/read/readSlice';
 import { toast } from './ui/use-toast';
 
 export default function Cart() {
-  const { books, total } = useAppSelector((state) => state.cart);
+  const { books } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const handleAddToRead = (book: IProduct) => {

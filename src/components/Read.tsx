@@ -7,10 +7,8 @@ import {
 } from './ui/sheet';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { Button } from './ui/button';
-import { IProduct } from '@/types/globalTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import {
-  addToRead,
   removeFromRead,
   markAsFinished,
 } from '@/redux/features/read/readSlice';
