@@ -4,14 +4,16 @@ import {
   useDeleteBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/books/bookApi';
-import { useAppSelector } from '@/redux/hook';
-import { IProduct } from '@/types/globalTypes';
-import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { IProduct } from '@/types/globalTypes';
+import { addToCart } from '@/redux/features/cart/cartSlice';
 
 export default function BookDetails() {
   const history = useNavigate();
+  const dispatch = useAppDispatch();
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const { id } = useParams();
 
@@ -44,6 +46,11 @@ export default function BookDetails() {
     }
   };
 
+  const handleAddProduct = (book: IProduct) => {
+    dispatch(addToCart(book));
+    toast.success('Book Added');
+  };
+
   return (
     <>
       <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300">
@@ -62,7 +69,9 @@ export default function BookDetails() {
             Publication Date: {bookData?.publicationDate}
           </p>
 
-          <Button>Add to Wishlist</Button>
+          <Button variant="default" onClick={() => handleAddProduct(bookData)}>
+            Add to Wishlist
+          </Button>
         </div>
         {isLoggedIn && (
           <div className="w-[20%] space-y-3">
