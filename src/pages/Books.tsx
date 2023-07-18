@@ -79,7 +79,7 @@ export default function Books() {
             <option value="Programming">Programming</option>
             <option value="Fiction">Fiction</option>
             <option value="Non-fiction">Non-Fiction</option>
-            <option value="Non-fiction">Business</option>
+            <option value="Business">Business</option>
             {/* Add other genre options as needed */}
           </select>
         </div>

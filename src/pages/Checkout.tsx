@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@/components/ui/button';
 import { DatePickerWithPresets } from '@/components/ui/datePickerWithPreset';
 import { Input } from '@/components/ui/input';
@@ -99,19 +100,11 @@ export default function Checkout() {
             {books.map((book) => (
               <div className="flex justify-between items-center bg-gray-100 p-1 rounded-lg">
                 <div className="flex items-center">
-                  <img
-                    src={book.image}
-                    className="h-[82px] rounded-md mr-2"
-                    alt=""
-                  />
                   <div>
-                    <h1 className="text-lg mb-2">{book.name}</h1>
-                    <p>Price: {book.price}</p>
+                    <h1 className="text-lg mb-2">{book?.title}</h1>
                   </div>
                 </div>
-                <div>
-                  <h1 className="text-4xl mr-5">{book.quantity}</h1>
-                </div>
+                <div></div>
               </div>
             ))}
           </div>

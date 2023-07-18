@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';

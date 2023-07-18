@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -66,7 +67,7 @@ export default function EditBook() {
     };
     try {
       const response: any = await editBook({ mData, id, accessToken });
-      console.log(response);
+      // console.log(response);
       if (response?.error?.data?.errorMessages[0]?.message) {
         toast.error(response?.error?.data?.errorMessages[0]?.message);
       } else {
@@ -112,7 +113,7 @@ export default function EditBook() {
                     <option value="Programming">Programming</option>
                     <option value="Fiction">Fiction</option>
                     <option value="Non-fiction">Non-Fiction</option>
-                    <option value="Non-fiction">Business</option>
+                    <option value="Business">Business</option>
                   </select>
                 </div>
               </div>
