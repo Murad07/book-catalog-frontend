@@ -9,7 +9,7 @@ import { useAppSelector } from '@/redux/hook';
 
 export default function Books() {
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
-  const { data, isLoading, error } = useGetBooksQuery('');
+  const { data } = useGetBooksQuery('');
 
   // Search
   const [searchQuery, setSearchQuery] = useState('');

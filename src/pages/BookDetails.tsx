@@ -17,7 +17,7 @@ export default function BookDetails() {
   const isLoggedIn: boolean = useAppSelector((state) => state.user.isLogedIn);
   const { id } = useParams();
 
-  const { data: book, isLoading, error } = useSingleBookQuery(id);
+  const { data: book } = useSingleBookQuery(id);
   const bookData = book?.data;
 
   // Step 2: Create a state variable to track the confirmation dialog
