@@ -19,12 +19,12 @@ interface UpdateBookInputs {
 }
 
 export default function EditBook() {
-  const { register, handleSubmit } = useForm<UpdateBookInputs>();
+  const { handleSubmit } = useForm<UpdateBookInputs>();
 
   const history = useNavigate();
 
   const { id } = useParams();
-  const { data: book, isLoading, error } = useSingleBookQuery(id);
+  const { data: book } = useSingleBookQuery(id);
   const bookData = book?.data;
 
   const [editBook] = useEditBookMutation();
@@ -59,6 +59,7 @@ export default function EditBook() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: UpdateBookInputs) => {
+    console.log(data);
     const mData = {
       title: selectedTitle,
       author: selectedAuthor,
