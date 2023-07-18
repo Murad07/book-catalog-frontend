@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   useEditBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/books/bookApi';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,11 +18,7 @@ interface UpdateBookInputs {
 }
 
 export default function EditBook() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-  } = useForm<UpdateBookInputs>();
+  const { register, handleSubmit } = useForm<UpdateBookInputs>();
 
   const history = useNavigate();
 
@@ -33,10 +29,43 @@ export default function EditBook() {
   const [editBook] = useEditBookMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedTitle, setSelectedTitle] = useState('');
+  const [selectedAuthor, setSelectedAuthor] = useState('');
+  const [selectedPublicationDate, setSelectedPublicationDate] = useState('');
+  useEffect(() => {
+    if (bookData?.genre) {
+      setSelectedGenre(bookData.genre);
+      setSelectedTitle(bookData.title);
+      setSelectedAuthor(bookData.author);
+      setSelectedPublicationDate(bookData.publicationDate);
+    }
+  }, [bookData?.genre]);
+
+  const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTitle(event.target.value);
+  };
+  const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGenre(event.target.value);
+  };
+  const handleAuthor = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedAuthor(event.target.value);
+  };
+  const handleDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedPublicationDate(event.target.value);
+    console.log(event.target.value);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: UpdateBookInputs) => {
-    // console.log(data);
+    const mData = {
+      title: selectedTitle,
+      author: selectedAuthor,
+      genre: selectedGenre,
+      publicationDate: selectedPublicationDate,
+    };
     try {
-      const response: any = await editBook({ data, id, accessToken });
+      const response: any = await editBook({ mData, id, accessToken });
       console.log(response);
       if (response?.error?.data?.errorMessages[0]?.message) {
         toast.error(response?.error?.data?.errorMessages[0]?.message);
@@ -63,86 +92,52 @@ export default function EditBook() {
               <div className="w-full space-y-5">
                 <div>
                   <Label htmlFor="name">Title</Label>
-                  <Input
+                  <input
                     type="text"
-                    id="title"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    defaultValue={bookData?.title}
-                    {...register('title', {
-                      validate: (value) => {
-                        return (
-                          isDirty || value.trim() !== '' || 'Title is required'
-                        );
-                      },
-                    })}
-                    className="mt-2"
+                    value={selectedTitle}
+                    className="border rounded px-2 py-2 w-full"
+                    onChange={handleTitle}
+                    required
                   />
-                  {isDirty && errors.title && <p>{errors.title.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="name">Genre</Label>
-                  <Input
-                    type="text"
-                    id="genre"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    defaultValue={bookData?.genre}
-                    {...register('genre', {
-                      validate: (value) => {
-                        return (
-                          isDirty || value.trim() !== '' || 'Genre is required'
-                        );
-                      },
-                    })}
-                    className="mt-2"
-                  />
-                  {isDirty && errors.genre && <p>{errors.genre.message}</p>}
+                  <select
+                    name="genre"
+                    value={selectedGenre}
+                    onChange={handleGenreChange}
+                    className="border rounded mt-2 px-2 py-2 w-full"
+                  >
+                    <option value="Story">Story</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-fiction">Non-Fiction</option>
+                    <option value="Non-fiction">Business</option>
+                  </select>
                 </div>
               </div>
               <div className="w-full space-y-5">
                 <div>
                   <Label htmlFor="name">Author</Label>
-                  <Input
+                  <input
                     type="text"
-                    id="author"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    {...register('author', {
-                      validate: (value) => {
-                        return (
-                          isDirty || value.trim() !== '' || 'Author is required'
-                        );
-                      },
-                    })}
-                    className="mt-2"
-                    defaultValue={bookData?.author}
+                    value={selectedAuthor}
+                    className="border rounded px-2 py-2 w-full"
+                    onChange={handleAuthor}
+                    required
                   />
-                  {isDirty && errors.author && <p>{errors.author.message}</p>}
                 </div>
                 <div className="w-full flex flex-col mt-2">
                   <Label htmlFor="name" className="mb-4">
                     Publication Date
                   </Label>
-                  <Input
+                  <input
                     type="date"
-                    id="publicationDate"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    {...register('publicationDate', {
-                      validate: (value) => {
-                        return (
-                          isDirty ||
-                          value.trim() !== '' ||
-                          'Publication Date is required'
-                        );
-                      },
-                    })}
-                    defaultValue={bookData?.publicationDate}
+                    value={selectedPublicationDate}
+                    className="border rounded px-2 py-2 w-full"
+                    onChange={handleDate}
+                    required
                   />
-                  {isDirty && errors.publicationDate && (
-                    <p>{errors.publicationDate.message}</p>
-                  )}
                 </div>
               </div>
             </div>

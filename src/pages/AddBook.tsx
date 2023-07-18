@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAddBookMutation } from '@/redux/features/books/bookApi';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,7 +19,7 @@ export default function AddBook() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<AddBookInputs>();
 
   const history = useNavigate();
@@ -45,6 +46,11 @@ export default function AddBook() {
     }
   };
 
+  const [selectedGenre, setSelectedGenre] = useState('Story');
+  const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGenre(event.target.value);
+  };
+
   return (
     <div className="flex justify-center items-center h-[calc(100vh-80px)] gap-10 text-primary">
       <ToastContainer />
@@ -69,14 +75,34 @@ export default function AddBook() {
                 <div>
                   <Label htmlFor="name">Genre</Label>
                   <Input
-                    type="text"
+                    type="hidden"
                     id="genre"
                     autoCapitalize="none"
                     autoCorrect="off"
-                    {...register('genre', { required: 'Genre is required' })}
+                    defaultValue={selectedGenre}
+                    {...register('genre', {
+                      validate: (value) => {
+                        return (
+                          isDirty || value.trim() !== '' || 'Genre is required'
+                        );
+                      },
+                    })}
                     className="mt-2"
                   />
-                  {errors.genre && <p>{errors.genre.message}</p>}
+
+                  <select
+                    value={selectedGenre}
+                    onChange={handleGenreChange}
+                    className="border rounded mt-2 px-2 py-2 w-full"
+                  >
+                    <option value="Story">Story</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-fiction">Non-Fiction</option>
+                    <option value="Non-fiction">Business</option>
+                    {/* Add other genre options as needed */}
+                  </select>
+                  {isDirty && errors.genre && <p>{errors.genre.message}</p>}
                 </div>
               </div>
               <div className="w-full space-y-5">

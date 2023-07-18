@@ -23,14 +23,14 @@ const bookApi = api.injectEndpoints({
       }),
     }),
     editBook: builder.mutation({
-      query: ({ data, id, accessToken }) => ({
+      query: ({ mData, id, accessToken }) => ({
         url: `/books/${id}`,
         method: 'PATCH',
         headers: {
           authorization: `${accessToken}`,
           'Content-Type': 'application/json',
         },
-        body: data,
+        body: mData,
       }),
     }),
     deleteBook: builder.mutation({
