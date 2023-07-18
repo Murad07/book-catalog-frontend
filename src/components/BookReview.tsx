@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
@@ -9,8 +7,7 @@ import {
   useAddReviewMutation,
   useGetReviewQuery,
 } from '@/redux/features/books/bookApi';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface IProps {
   id: string;
@@ -21,7 +18,7 @@ export default function BookReview({ id }: IProps) {
   const [addReview] = useAddReviewMutation();
   const accessToken = localStorage.getItem('accessToken') || '';
 
-  const { data, isLoading, error, refetch } = useGetReviewQuery(id);
+  const { data, refetch } = useGetReviewQuery(id);
   const myData = data?.data;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
